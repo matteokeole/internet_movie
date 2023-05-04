@@ -6,19 +6,43 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+
+@Entity
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Movie.class, resolver = CustomObjectIdResolver.class)
 public class Movie {
+	@Id
 	private String id;
+
+	@ManyToOne
 	private Country country;
+
 	private String name;
+
 	private String url;
+
 	private String description;
+
 	private String language;
+
+	@ManyToOne
 	private FilmingLocation filmingLocation;
+
+	@ManyToMany
 	private Producer[] producers;
+
+	@ManyToMany
 	private Actor[] casting;
+
 	private Date releaseDate;
+
+	@OneToMany
 	private Role[] roles;
+
 	private String[] genres;
 
 	public String toString() {

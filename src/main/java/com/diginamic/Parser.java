@@ -1,22 +1,22 @@
 package com.diginamic;
 
+import com.diginamic.models.JPAManager;
 import com.diginamic.models.Movie;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import jakarta.persistence.EntityManager;
+
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Parser {
-	// private static final String host = "localhost";
-	// private static final String username = "root";
-	// private static final String password = "";
 	private static final String defaultFilePath = "database.json";
 	private static final Scanner scanner = new Scanner(System.in);
 
-	public static void main(final String[] args) throws Exception {
+	public static void main(final String[] args) {
 		System.out.println(Locale.WELCOME);
 
 		String filePath = null;
@@ -25,7 +25,15 @@ public class Parser {
 
 		System.out.println(String.format(Locale.IMPORT_STARTED.toString(), filePath));
 
-		final File file = new File(filePath);
+		final File file;
+
+		try {
+			file = new File(filePath);
+		} catch (final NullPointerException exception) {
+			exception.printStackTrace();
+
+			return;
+		}
 
 		final ObjectMapper mapper = new ObjectMapper();
 
@@ -33,9 +41,23 @@ public class Parser {
 			.setDateFormat(new SimpleDateFormat("yyyy-M-dd"))
 			.setSerializationInclusion(Include.NON_NULL);
 
-		final Movie[] movies = mapper.readValue(file, Movie[].class);
+		Movie[] movies = {};
 
-		System.out.println(Arrays.toString(movies));
+		try {
+			movies = mapper.readValue(file, Movie[].class);
+		} catch (final IOException exception) {
+			exception.printStackTrace();
+
+			return;
+		}
+
+		final EntityManager manager = JPAManager.getInstance().getEntityManager();
+
+		manager.getTransaction().begin();
+
+		for (final Movie movie : movies) manager.persist(movie);
+
+		manager.getTransaction().commit();
 
 		scanner.close();
 	}
