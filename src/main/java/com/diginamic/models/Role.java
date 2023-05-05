@@ -2,30 +2,26 @@ package com.diginamic.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 
 @Entity
 public class Role {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	private String character;
 
-	@OneToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Actor actor;
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Movie movie;
-
-	public String toString() {
-		return character;
-	}
 
 	public Long getId() {
 		return id;

@@ -9,10 +9,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "filming_location")
+@Table(name="filming_location")
 public class FilmingLocation {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
 	private String city;
@@ -20,10 +20,6 @@ public class FilmingLocation {
 	private String department;
 
 	private String country;
-
-	public String toString() {
-		return city;
-	}
 
 	public Long getId() {
 		return id;

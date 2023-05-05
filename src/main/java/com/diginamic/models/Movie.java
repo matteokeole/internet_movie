@@ -1,11 +1,14 @@
 package com.diginamic.models;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -13,12 +16,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Movie.class, resolver = CustomObjectIdResolver.class)
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Movie.class, resolver=CustomObjectIdResolver.class)
 public class Movie {
 	@Id
 	private String id;
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private Country country;
 
 	private String name;
@@ -29,25 +32,21 @@ public class Movie {
 
 	private String language;
 
-	@ManyToOne
+	@ManyToOne(cascade=CascadeType.PERSIST)
 	private FilmingLocation filmingLocation;
 
-	@ManyToMany
-	private Producer[] producers;
+	@ManyToMany(cascade=CascadeType.PERSIST)
+	private List<Producer> producers = new ArrayList<>();
 
-	@ManyToMany
-	private Actor[] casting;
+	@ManyToMany(cascade=CascadeType.PERSIST)
+	private List<Actor> casting = new ArrayList<>();
 
 	private Date releaseDate;
 
-	@OneToMany
-	private Role[] roles;
+	@OneToMany(mappedBy="movie")
+	private List<Role> roles = new ArrayList<>();
 
-	private String[] genres;
-
-	public String toString() {
-		return String.format("%s - %s", id, name);
-	}
+	private List<String> genres = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -85,12 +84,12 @@ public class Movie {
 	}
 
 	@JsonProperty("realisateurs")
-	public Producer[] getProducers() {
+	public List<Producer> getProducers() {
 		return producers;
 	}
 
 	@JsonProperty("castingPrincipal")
-	public Actor[] getCasting() {
+	public List<Actor> getCasting() {
 		return casting;
 	}
 
@@ -100,12 +99,12 @@ public class Movie {
 	}
 
 	@JsonProperty("roles")
-	public Role[] getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
 	@JsonProperty("genres")
-	public String[] getGenres() {
+	public List<String> getGenres() {
 		return genres;
 	}
 }

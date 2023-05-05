@@ -41,7 +41,7 @@ public class Parser {
 			.setDateFormat(new SimpleDateFormat("yyyy-M-dd"))
 			.setSerializationInclusion(Include.NON_NULL);
 
-		Movie[] movies = {};
+		final Movie[] movies;
 
 		try {
 			movies = mapper.readValue(file, Movie[].class);

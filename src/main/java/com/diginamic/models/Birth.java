@@ -11,10 +11,6 @@ public class Birth {
 	private Date birthDate;
 
 	private String birthPlace;
-	
-	public String toString() {
-		return birthPlace;
-	}
 
 	@JsonProperty("dateNaissance")
 	public Date getBirthDate() {

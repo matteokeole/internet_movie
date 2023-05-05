@@ -1,5 +1,8 @@
 package com.diginamic.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,10 +11,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Actor.class, resolver = CustomObjectIdResolver.class)
-@JsonIgnoreProperties(value = {"roles"})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Actor.class, resolver=CustomObjectIdResolver.class)
+@JsonIgnoreProperties(value={"roles"})
 public class Actor {
 	@Id
 	private String id;
@@ -25,9 +29,8 @@ public class Actor {
 
 	private Float height;
 
-	public String toString() {
-		return identity;
-	}
+	@ManyToMany(mappedBy="casting")
+	private List<Movie> movies = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -52,5 +55,9 @@ public class Actor {
 	@JsonProperty("height")
 	public Float getHeight() {
 		return height;
+	}
+
+	public List<Movie> getMovies() {
+		return movies;
 	}
 }
