@@ -1,15 +1,15 @@
-package com.diginamic;
+package com.diginamic.locales;
 
-public enum Locale {
+public enum ParserLocale {
 	WELCOME("Welcome to the Internet Movie database setup. This will help you to populate the database with a JSON file."),
 	FILE_PATH_PROMPT("JSON file path [%s]:"),
-	FILE_PATH_INVALID("Invalid file path '%s', please retry."),
 	IMPORT_STARTED("Importing file '%s'..."),
-	CURSOR("> ");
+	CURSOR("> "),
+	ERROR_INVALID_FILE_PATH("Invalid file path '%s', please retry.");
 
 	private final String value;
 
-	private Locale(final String value) {
+	private ParserLocale(final String value) {
 		this.value = value;
 	}
 
