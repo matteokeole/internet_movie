@@ -2,39 +2,40 @@ package com.diginamic.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Actor.class, resolver=CustomObjectIdResolver.class)
-@JsonIgnoreProperties(value={"roles"})
+// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Actor.class, resolver=CustomObjectIdResolver.class)
+@JsonIgnoreProperties(value={"height", "roles"})
 public class Actor {
 	@Id
 	private String id;
 
 	private String identity;
 
-	@Embedded
-	private Birth birth;
+	private String birthDate;
+
+	private String birthPlace;
 
 	private String url;
 
-	private Float height;
-
-	// @ManyToMany(mappedBy="casting")
-	// private List<Movie> movies = new ArrayList<>();
-
 	@OneToMany(mappedBy="actor")
 	private List<Role> roles = new ArrayList<>();
+
+	@JsonProperty("naissance")
+	private void unpackNested(Map<String, String> birth) {
+		if (birth == null) return;
+
+		this.birthDate = birth.get("dateNaissance");
+		this.birthPlace = birth.get("lieuNaissance");
+	}
 
 	@JsonProperty("id")
 	public String getId() {
@@ -46,24 +47,18 @@ public class Actor {
 		return identity;
 	}
 
-	@JsonProperty("naissance")
-	public Birth getBirth() {
-		return birth;
+	public String getBirthDate() {
+		return birthDate;
+	}
+
+	public String getBirthPlace() {
+		return birthPlace;
 	}
 
 	@JsonProperty("url")
 	public String getUrl() {
 		return url;
 	}
-
-	@JsonProperty("height")
-	public Float getHeight() {
-		return height;
-	}
-
-	/* public List<Movie> getMovies() {
-		return movies;
-	} */
 
 	public List<Role> getRoles() {
 		return roles;

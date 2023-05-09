@@ -3,10 +3,8 @@ package com.diginamic.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -16,13 +14,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Movie.class, resolver=CustomObjectIdResolver.class)
-@JsonIgnoreProperties(value={"castingPrincipal"})
+// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Movie.class, resolver=CustomObjectIdResolver.class)
+@JsonIgnoreProperties(value={"castingPrincipal", "genres"})
 public class Movie {
 	@Id
 	private String id;
 
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Country country;
 
 	private String name;
@@ -33,21 +31,19 @@ public class Movie {
 
 	private String language;
 
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private FilmingLocation filmingLocation;
 
-	@ManyToMany(cascade=CascadeType.MERGE)
+	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Producer> producers = new ArrayList<>();
-
-	// @ManyToMany(cascade=CascadeType.MERGE)
-	// private List<Actor> casting = new ArrayList<>();
 
 	private String releaseDate;
 
-	@OneToMany(mappedBy="movie")
+	@OneToMany(mappedBy="movie", cascade=CascadeType.MERGE)
 	private List<Role> roles = new ArrayList<>();
 
-	private List<String> genres = new ArrayList<>();
+	@ManyToMany(cascade=CascadeType.ALL)
+	private List<Genre> genres = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -89,11 +85,6 @@ public class Movie {
 		return producers;
 	}
 
-	// @JsonProperty("castingPrincipal")
-	/* public List<Actor> getCasting() {
-		return casting;
-	} */
-
 	@JsonProperty("anneeSortie")
 	public String getReleaseDate() {
 		return releaseDate;
@@ -104,8 +95,8 @@ public class Movie {
 		return roles;
 	}
 
-	@JsonProperty("genres")
-	public List<String> getGenres() {
+	// @JsonProperty("genres")
+	public List<Genre> getGenres() {
 		return genres;
 	}
 }
