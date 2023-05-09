@@ -1,10 +1,10 @@
 package com.diginamic.models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -17,11 +17,12 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Movie.class, resolver=CustomObjectIdResolver.class)
+@JsonIgnoreProperties(value={"castingPrincipal"})
 public class Movie {
 	@Id
 	private String id;
 
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private Country country;
 
 	private String name;
@@ -32,16 +33,16 @@ public class Movie {
 
 	private String language;
 
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private FilmingLocation filmingLocation;
 
-	@ManyToMany(cascade=CascadeType.PERSIST)
+	@ManyToMany(cascade=CascadeType.MERGE)
 	private List<Producer> producers = new ArrayList<>();
 
-	@ManyToMany(cascade=CascadeType.PERSIST)
-	private List<Actor> casting = new ArrayList<>();
+	// @ManyToMany(cascade=CascadeType.MERGE)
+	// private List<Actor> casting = new ArrayList<>();
 
-	private Date releaseDate;
+	private String releaseDate;
 
 	@OneToMany(mappedBy="movie")
 	private List<Role> roles = new ArrayList<>();
@@ -88,13 +89,13 @@ public class Movie {
 		return producers;
 	}
 
-	@JsonProperty("castingPrincipal")
-	public List<Actor> getCasting() {
+	// @JsonProperty("castingPrincipal")
+	/* public List<Actor> getCasting() {
 		return casting;
-	}
+	} */
 
 	@JsonProperty("anneeSortie")
-	public Date getReleaseDate() {
+	public String getReleaseDate() {
 		return releaseDate;
 	}
 

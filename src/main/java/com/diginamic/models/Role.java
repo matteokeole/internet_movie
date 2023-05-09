@@ -17,10 +17,10 @@ public class Role {
 
 	private String character;
 
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private Actor actor;
 
-	@ManyToOne(cascade=CascadeType.PERSIST)
+	@ManyToOne(cascade=CascadeType.MERGE)
 	private Movie movie;
 
 	public Long getId() {

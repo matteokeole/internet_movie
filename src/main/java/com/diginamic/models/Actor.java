@@ -12,6 +12,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Actor.class, resolver=CustomObjectIdResolver.class)
@@ -29,8 +30,11 @@ public class Actor {
 
 	private Float height;
 
-	@ManyToMany(mappedBy="casting")
-	private List<Movie> movies = new ArrayList<>();
+	// @ManyToMany(mappedBy="casting")
+	// private List<Movie> movies = new ArrayList<>();
+
+	@OneToMany(mappedBy="actor")
+	private List<Role> roles = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -57,7 +61,11 @@ public class Actor {
 		return height;
 	}
 
-	public List<Movie> getMovies() {
+	/* public List<Movie> getMovies() {
 		return movies;
+	} */
+
+	public List<Role> getRoles() {
+		return roles;
 	}
 }

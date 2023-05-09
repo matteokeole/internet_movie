@@ -55,7 +55,7 @@ public class Parser {
 
 		manager.getTransaction().begin();
 
-		for (final Movie movie : movies) manager.persist(movie);
+		for (final Movie movie : movies) manager.merge(movie);
 
 		manager.getTransaction().commit();
 
