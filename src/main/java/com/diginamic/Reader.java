@@ -1,8 +1,11 @@
 package com.diginamic;
 
+import java.util.List;
 import java.util.Scanner;
 
 import com.diginamic.locales.ReaderLocale;
+import com.diginamic.models.Movie;
+import com.diginamic.services.MovieService;
 
 public class Reader {
 	private static final Scanner scanner = new Scanner(System.in);
@@ -26,7 +29,9 @@ public class Reader {
 
 			switch (action) {
 				case 1:
-					//
+					final List<Movie> results = MovieService.findOne("tt1801045");
+
+					System.out.println(results);
 
 					break;
 				case 2:

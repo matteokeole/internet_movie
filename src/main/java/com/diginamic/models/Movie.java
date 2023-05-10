@@ -11,10 +11,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 @Entity
 @JsonIgnoreProperties(value={"castingPrincipal", "genres"})
+@NamedQuery(name="Movie.findOne", query="SELECT movie FROM Movie movie WHERE movie.id = :id")
 public class Movie {
 	@Id
 	private String id;
