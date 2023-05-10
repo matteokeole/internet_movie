@@ -21,8 +21,6 @@ public class Parser {
 
 		scanner.close();
 
-		System.out.println(String.format(ParserLocale.IMPORT_STARTED.toString(), filePath));
-
 		final File file;
 
 		try {
@@ -33,25 +31,42 @@ public class Parser {
 			return;
 		}
 
+		final long then = System.currentTimeMillis();
 		final Movie[] movies;
 
-		try {
-			movies = MovieService.parse(file);
-		} catch (final IOException exception) {
-			System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception.getMessage()));
+		// Parsing
+		{
+			System.out.print(String.format(ParserLocale.PARSING_STARTED.toString(), filePath));
 
-			return;
+			try {
+				movies = MovieService.parse(file);
+			} catch (final IOException exception) {
+				System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception.getMessage()));
+
+				return;
+			}
+
+			System.out.println(ParserLocale.DONE);
 		}
 
-		try {
-			MovieService.persist(movies);
-		} catch (final Exception exception) {
-			System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception.getMessage()));
+		// Import
+		{
+			System.out.print(String.format(ParserLocale.IMPORT_STARTED.toString(), filePath));
 
-			return;
+			try {
+				MovieService.persist(movies);
+			} catch (final Exception exception) {
+				System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception.getMessage()));
+
+				return;
+			}
+
+			System.out.println(ParserLocale.DONE);
 		}
 
-		System.out.println(ParserLocale.IMPORT_ENDED);
+		final long executionTime = (System.currentTimeMillis() - then) / 1000;
+
+		System.out.println(String.format(ParserLocale.EXECUTION_TIME.toString(), executionTime));
 	}
 
 	private static String getFilePath() {

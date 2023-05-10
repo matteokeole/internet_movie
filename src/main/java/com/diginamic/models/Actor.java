@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -19,8 +20,10 @@ public class Actor {
 
 	private String identity;
 
+	@Column(name="birth_date")
 	private String birthDate;
 
+	@Column(name="birth_place")
 	private String birthPlace;
 
 	private String url;

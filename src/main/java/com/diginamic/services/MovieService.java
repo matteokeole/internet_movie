@@ -3,7 +3,6 @@ package com.diginamic.services;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 
 import com.diginamic.JPAManager;
 import com.diginamic.models.Movie;
@@ -34,10 +33,10 @@ public class MovieService {
 		manager.close();
 	}
 
-	public static List<Movie> findOne(final String id) {
-		return manager
-			.createNamedQuery("Movie.findOne", Movie.class)
-			.setParameter("id", id)
-			.getResultList();
+	public static int findAll(final String id) {
+		return ((Number) manager
+			.createNamedQuery("Movie.findAll", Integer.class)
+			// .setParameter("id", id)
+			.getSingleResult()).intValue();
 	}
 }

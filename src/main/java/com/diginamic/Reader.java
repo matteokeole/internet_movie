@@ -1,10 +1,8 @@
 package com.diginamic;
 
-import java.util.List;
 import java.util.Scanner;
 
 import com.diginamic.locales.ReaderLocale;
-import com.diginamic.models.Movie;
 import com.diginamic.services.MovieService;
 
 public class Reader {
@@ -21,6 +19,8 @@ public class Reader {
 
 			input = scanner.nextLine().trim();
 
+			System.out.println();
+
 			try {
 				action = Integer.parseInt(input);
 			} catch (final NumberFormatException exception) {
@@ -29,9 +29,7 @@ public class Reader {
 
 			switch (action) {
 				case 1:
-					final List<Movie> results = MovieService.findOne("tt1801045");
-
-					System.out.println(results);
+					System.out.println(MovieService.findAll("tt0058796"));
 
 					break;
 				case 2:
@@ -77,7 +75,6 @@ public class Reader {
 		System.out.println(ReaderLocale.OPTION_5);
 		System.out.println(ReaderLocale.OPTION_6);
 		System.out.println(ReaderLocale.OPTION_7);
-		System.out.println();
 		System.out.print(ReaderLocale.CURSOR);
 	}
 }
