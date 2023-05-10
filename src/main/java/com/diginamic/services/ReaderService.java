@@ -25,27 +25,27 @@ public class ReaderService {
 
 			switch (action) {
 				case 1:
-					System.out.println(MovieService.findAll("tt0058796"));
+					handleAction1();
 
 					break;
 				case 2:
-					//
+					handleAction2();
 
 					break;
 				case 3:
-					//
+					handleAction3();
 
 					break;
 				case 4:
-					//
+					handleAction4();
 
 					break;
 				case 5:
-					//
+					handleAction5();
 
 					break;
 				case 6:
-					//
+					handleAction6();
 
 					break;
 				case 7:
@@ -72,5 +72,30 @@ public class ReaderService {
 		System.out.println(ReaderLocale.OPTION_6);
 		System.out.println(ReaderLocale.OPTION_7);
 		System.out.print(ReaderLocale.CURSOR);
+	}
+
+	private static void handleAction1() {
+		System.out.println(ReaderLocale.OPTION_1_PROMPT_MOVIE_ID);
+		System.out.println(MovieService.findAll("tt0058796"));
+	}
+
+	private static void handleAction2() {
+		//
+	}
+
+	private static void handleAction3() {
+		//
+	}
+
+	private static void handleAction4() {
+		//
+	}
+
+	private static void handleAction5() {
+		//
+	}
+
+	private static void handleAction6() {
+		//
 	}
 }

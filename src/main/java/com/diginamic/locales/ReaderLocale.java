@@ -3,6 +3,7 @@ package com.diginamic.locales;
 public enum ReaderLocale {
 	WELCOME("Welcome to the Internet Movie database reader. What do you want to get?"),
 	OPTION_1("[1] Display an actor's filmography"),
+	OPTION_1_PROMPT_MOVIE_ID("Enter an actor ID:"),
 	OPTION_2("[2] Display a movie's casting"),
 	OPTION_3("[3] Display movies released within a given interval"),
 	OPTION_4("[4] Display movies that share 2 actors"),
