@@ -17,7 +17,8 @@ import jakarta.persistence.OneToMany;
 @Entity
 @JsonIgnoreProperties(value={"height", "roles"})
 @NamedQueries({
-	@NamedQuery(name="Actor.find", query="SELECT actor FROM Actor actor WHERE actor.id = :actorId")
+	@NamedQuery(name="Actor.find", query="SELECT actor FROM Actor actor WHERE actor.id = :actorId"),
+	@NamedQuery(name="Actor.findByMovie", query="SELECT actor FROM Actor actor JOIN actor.roles role JOIN role.movie movie WHERE movie.id = :movieId")
 })
 public class Actor {
 	@Id

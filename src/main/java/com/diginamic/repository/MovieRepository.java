@@ -6,6 +6,18 @@ import com.diginamic.JPA;
 import com.diginamic.models.Movie;
 
 public class MovieRepository {
+	public static Movie find(final String movieId) {
+		return JPA
+			.getInstance()
+			.getEntityManager()
+			.createNamedQuery("Movie.find", Movie.class)
+			.setParameter("movieId", movieId)
+			.getResultList()
+			.stream()
+			.findFirst()
+			.orElse(null);
+	}
+
 	public static List<Movie> findByActor(final String actorId) {
 		return JPA
 			.getInstance()

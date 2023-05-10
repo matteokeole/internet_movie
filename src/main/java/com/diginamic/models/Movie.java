@@ -19,6 +19,7 @@ import jakarta.persistence.OneToMany;
 @Entity
 @JsonIgnoreProperties(value={"castingPrincipal"})
 @NamedQueries({
+	@NamedQuery(name="Movie.find", query="SELECT movie FROM Movie movie WHERE movie.id = :movieId"),
 	@NamedQuery(name="Movie.findByActor", query="SELECT movie FROM Movie movie JOIN movie.roles role JOIN role.actor actor WHERE actor.id = :actorId")
 })
 public class Movie {
@@ -52,6 +53,8 @@ public class Movie {
 	private List<Genre> genres = new ArrayList<>();
 
 	public String toString() {
+		if (releaseDate == null) return name;
+
 		return String.format("%s (%s)", name, releaseDate);
 	}
 
