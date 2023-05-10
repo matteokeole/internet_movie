@@ -10,15 +10,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 @Entity
 @JsonIgnoreProperties(value={"height", "roles"})
+@NamedQueries({
+	@NamedQuery(name="Actor.find", query="SELECT actor FROM Actor actor WHERE actor.id = :actorId")
+})
 public class Actor {
 	@Id
 	private String id;
 
-	private String identity;
+	private String name;
 
 	@Column(name="birth_date")
 	private String birthDate;
@@ -31,14 +36,18 @@ public class Actor {
 	@OneToMany(mappedBy="actor")
 	private List<Role> roles = new ArrayList<>();
 
+	public String toString() {
+		return name;
+	}
+
 	@JsonProperty("id")
 	public String getId() {
 		return id;
 	}
 
 	@JsonProperty("identite")
-	public String getIdentity() {
-		return identity;
+	public String getName() {
+		return name;
 	}
 
 	public String getBirthDate() {

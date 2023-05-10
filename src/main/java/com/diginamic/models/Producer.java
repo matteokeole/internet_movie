@@ -17,7 +17,7 @@ public class Producer {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private String identity;
+	private String name;
 
 	private String url;
 
@@ -29,8 +29,8 @@ public class Producer {
 	}
 
 	@JsonProperty("identite")
-	public String getIdentity() {
-		return identity;
+	public String getName() {
+		return name;
 	}
 
 	@JsonProperty("url")

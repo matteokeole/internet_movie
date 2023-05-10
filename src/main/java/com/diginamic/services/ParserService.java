@@ -1,11 +1,17 @@
 package com.diginamic.services;
 
 import com.diginamic.App;
+import com.diginamic.JPA;
 import com.diginamic.locales.ParserLocale;
 import com.diginamic.models.Movie;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.persistence.EntityManager;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 
 public class ParserService {
 	private static final String defaultFilePath = "database.json";
@@ -33,7 +39,7 @@ public class ParserService {
 			System.out.print(String.format(ParserLocale.PARSING_STARTED.toString(), filePath));
 
 			try {
-				movies = MovieService.parse(file);
+				movies = parse(file);
 			} catch (final IOException exception) {
 				System.out.print("\n\n");
 				System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception));
@@ -49,7 +55,7 @@ public class ParserService {
 			System.out.print(String.format(ParserLocale.IMPORT_STARTED.toString(), filePath));
 
 			try {
-				MovieService.persist(movies);
+				persist(movies);
 			} catch (final Exception exception) {
 				System.out.print("\n\n");
 				System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception));
@@ -77,5 +83,24 @@ public class ParserService {
 		if (filePath.isEmpty()) return defaultFilePath;
 
 		return filePath;
+	}
+
+	private static Movie[] parse(final File file) throws IOException {
+		final ObjectMapper mapper = new ObjectMapper();
+
+		return mapper
+			.setDateFormat(new SimpleDateFormat("yyyy-M-dd"))
+			.setSerializationInclusion(Include.NON_NULL)
+			.readValue(file, Movie[].class);
+	}
+
+	private static void persist(final Movie[] movies) {
+		final EntityManager manager = JPA.getInstance().getEntityManager();
+
+		for (final Movie movie : movies) {
+			manager.getTransaction().begin();
+			manager.merge(movie);
+			manager.getTransaction().commit();
+		}
 	}
 }
