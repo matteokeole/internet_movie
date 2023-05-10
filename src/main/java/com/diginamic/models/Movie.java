@@ -39,11 +39,8 @@ public class Movie {
 
 	private String releaseDate;
 
-	@OneToMany(mappedBy="movie", cascade=CascadeType.MERGE)
+	@OneToMany(cascade=CascadeType.ALL)
 	private List<Role> roles = new ArrayList<>();
-
-	@ManyToMany(cascade=CascadeType.ALL)
-	private List<Genre> genres = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -93,10 +90,5 @@ public class Movie {
 	@JsonProperty("roles")
 	public List<Role> getRoles() {
 		return roles;
-	}
-
-	// @JsonProperty("genres")
-	public List<Genre> getGenres() {
-		return genres;
 	}
 }

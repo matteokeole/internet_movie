@@ -56,11 +56,12 @@ public class Parser {
 
 		final EntityManager manager = JPAManager.getInstance().getEntityManager();
 
-		manager.getTransaction().begin();
+		for (final Movie movie : movies) {
+			manager.getTransaction().begin();
+			manager.merge(movie);
+			manager.getTransaction().commit();
+		}
 
-		for (final Movie movie : movies) manager.merge(movie);
-
-		manager.getTransaction().commit();
 		manager.close();
 	}
 

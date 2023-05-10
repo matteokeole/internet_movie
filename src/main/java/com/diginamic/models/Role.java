@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,12 +17,12 @@ public class Role {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-	private String character;
+	private String characterName;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	private Movie movie;
 
-	@ManyToOne(cascade=CascadeType.MERGE)
+	@ManyToOne(cascade=CascadeType.ALL)
 	private Actor actor;
 
 	public Long getId() {
@@ -31,8 +30,8 @@ public class Role {
 	}
 
 	@JsonProperty("characterName")
-	public String getCharacter() {
-		return character;
+	public String getCharacterName() {
+		return characterName;
 	}
 
 	public Movie getMovie() {

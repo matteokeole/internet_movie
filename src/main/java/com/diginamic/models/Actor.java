@@ -29,14 +29,6 @@ public class Actor {
 	@OneToMany(mappedBy="actor")
 	private List<Role> roles = new ArrayList<>();
 
-	@JsonProperty("naissance")
-	private void unpackNested(Map<String, String> birth) {
-		if (birth == null) return;
-
-		this.birthDate = birth.get("dateNaissance");
-		this.birthPlace = birth.get("lieuNaissance");
-	}
-
 	@JsonProperty("id")
 	public String getId() {
 		return id;
@@ -53,6 +45,14 @@ public class Actor {
 
 	public String getBirthPlace() {
 		return birthPlace;
+	}
+
+	@JsonProperty("naissance")
+	private void setBirth(final Map<String, String> birth) {
+		if (birth == null) return;
+
+		birthDate = birth.get("dateNaissance");
+		birthPlace = birth.get("lieuNaissance");
 	}
 
 	@JsonProperty("url")
