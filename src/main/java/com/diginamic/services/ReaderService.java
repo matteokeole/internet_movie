@@ -1,13 +1,9 @@
-package com.diginamic;
+package com.diginamic.services;
 
-import java.util.Scanner;
-
+import com.diginamic.App;
 import com.diginamic.locales.ReaderLocale;
-import com.diginamic.services.MovieService;
 
-public class Reader {
-	private static final Scanner scanner = new Scanner(System.in);
-
+public class ReaderService {
 	public static void main(final String[] args) {
 		System.out.println(ReaderLocale.WELCOME);
 
@@ -17,7 +13,7 @@ public class Reader {
 		loop: for (;;) {
 			printMenu();
 
-			input = scanner.nextLine().trim();
+			input = App.scanner.nextLine().trim();
 
 			System.out.println();
 
@@ -63,7 +59,7 @@ public class Reader {
 
 		System.out.println(ReaderLocale.QUIT);
 
-		scanner.close();
+		App.scanner.close();
 	}
 
 	private static void printMenu() {

@@ -29,8 +29,6 @@ public class MovieService {
 			manager.merge(movie);
 			manager.getTransaction().commit();
 		}
-
-		manager.close();
 	}
 
 	public static int findAll(final String id) {

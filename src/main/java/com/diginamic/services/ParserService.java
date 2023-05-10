@@ -1,16 +1,14 @@
-package com.diginamic;
+package com.diginamic.services;
 
+import com.diginamic.App;
 import com.diginamic.locales.ParserLocale;
 import com.diginamic.models.Movie;
-import com.diginamic.services.MovieService;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
 
-public class Parser {
+public class ParserService {
 	private static final String defaultFilePath = "database.json";
-	private static final Scanner scanner = new Scanner(System.in);
 
 	public static void main(final String[] args) {
 		System.out.println(ParserLocale.WELCOME);
@@ -18,8 +16,6 @@ public class Parser {
 		String filePath = null;
 
 		while (filePath == null) filePath = getFilePath();
-
-		scanner.close();
 
 		final File file = new File(filePath);
 
@@ -74,7 +70,7 @@ public class Parser {
 		System.out.println(String.format(ParserLocale.FILE_PATH_PROMPT.toString(), defaultFilePath));
 		System.out.print(ParserLocale.CURSOR);
 
-		String filePath = scanner.nextLine().trim();
+		String filePath = App.scanner.nextLine().trim();
 
 		System.out.println();
 
