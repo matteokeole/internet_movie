@@ -1,4 +1,4 @@
-package com.diginamic.models;
+package com.diginamic;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;

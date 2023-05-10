@@ -13,7 +13,7 @@ public class Reader {
 		String input;
 		int action = 0;
 
-		while (action != 7) {
+		loop: for (;;) {
 			printMenu();
 
 			input = scanner.nextLine().trim();
@@ -49,6 +49,8 @@ public class Reader {
 					//
 
 					break;
+				case 7:
+					break loop;
 				default:
 					System.out.println(String.format(ReaderLocale.ERROR_INPUT_MISMATCH.toString(), input));
 

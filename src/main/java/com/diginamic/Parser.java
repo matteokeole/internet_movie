@@ -1,16 +1,11 @@
 package com.diginamic;
 
 import com.diginamic.locales.ParserLocale;
-import com.diginamic.models.JPAManager;
 import com.diginamic.models.Movie;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.persistence.EntityManager;
+import com.diginamic.services.MovieService;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class Parser {
@@ -33,36 +28,30 @@ public class Parser {
 		try {
 			file = new File(filePath);
 		} catch (final NullPointerException exception) {
-			exception.printStackTrace();
+			System.out.println(String.format(ParserLocale.ERROR_FILE.toString(), exception.getMessage()));
 
 			return;
 		}
-
-		final ObjectMapper mapper = new ObjectMapper();
-
-		mapper
-			.setDateFormat(new SimpleDateFormat("yyyy-M-dd"))
-			.setSerializationInclusion(Include.NON_NULL);
 
 		final Movie[] movies;
 
 		try {
-			movies = mapper.readValue(file, Movie[].class);
+			movies = MovieService.parse(file);
 		} catch (final IOException exception) {
-			exception.printStackTrace();
+			System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception.getMessage()));
 
 			return;
 		}
 
-		final EntityManager manager = JPAManager.getInstance().getEntityManager();
+		try {
+			MovieService.persist(movies);
+		} catch (final Exception exception) {
+			System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception.getMessage()));
 
-		for (final Movie movie : movies) {
-			manager.getTransaction().begin();
-			manager.merge(movie);
-			manager.getTransaction().commit();
+			return;
 		}
 
-		manager.close();
+		System.out.println(ParserLocale.IMPORT_ENDED);
 	}
 
 	private static String getFilePath() {

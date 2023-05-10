@@ -12,7 +12,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 @Entity
-// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Actor.class, resolver=CustomObjectIdResolver.class)
 @JsonIgnoreProperties(value={"height", "roles"})
 public class Actor {
 	@Id

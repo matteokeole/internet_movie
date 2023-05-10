@@ -14,7 +14,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id", scope=Movie.class, resolver=CustomObjectIdResolver.class)
 @JsonIgnoreProperties(value={"castingPrincipal", "genres"})
 public class Movie {
 	@Id
