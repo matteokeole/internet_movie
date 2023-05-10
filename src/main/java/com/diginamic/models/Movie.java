@@ -17,7 +17,7 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 
 @Entity
-@JsonIgnoreProperties(value={"castingPrincipal", "genres"})
+@JsonIgnoreProperties(value={"castingPrincipal"})
 @NamedQueries({
 	@NamedQuery(name="Movie.findAll", query="SELECT COUNT(1) FROM Movie m")
 })
@@ -47,6 +47,9 @@ public class Movie {
 
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Role> roles = new ArrayList<>();
+
+	@ManyToMany(cascade=CascadeType.ALL)
+	private List<Genre> genres = new ArrayList<>();
 
 	@JsonProperty("id")
 	public String getId() {
@@ -96,5 +99,23 @@ public class Movie {
 	@JsonProperty("roles")
 	public List<Role> getRoles() {
 		return roles;
+	}
+
+	public List<Genre> getGenres() {
+		return genres;
+	}
+
+	@JsonProperty("genres")
+	public void setGenres(final String[] names) {
+		if (names == null) return;
+
+		Genre genre;
+
+		for (final String name : names) {
+			genre = new Genre();
+			genre.setName(name);
+			genre.getMovies().add(this);
+			genres.add(genre);
+		}
 	}
 }

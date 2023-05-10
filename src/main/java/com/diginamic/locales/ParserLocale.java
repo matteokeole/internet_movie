@@ -1,7 +1,7 @@
 package com.diginamic.locales;
 
 public enum ParserLocale {
-	WELCOME("Welcome to the Internet Movie database setup. This will help you to populate the database with a JSON file."),
+	WELCOME("Welcome to the Internet Movie database setup.\nPlease enter the path of the JSON database file."),
 	FILE_PATH_PROMPT("JSON file path [%s]:"),
 	IMPORT_STARTED("Importing '%s'... "),
 	PARSING_STARTED("Parsing '%s'... "),
