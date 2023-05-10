@@ -21,12 +21,10 @@ public class Parser {
 
 		scanner.close();
 
-		final File file;
+		final File file = new File(filePath);
 
-		try {
-			file = new File(filePath);
-		} catch (final NullPointerException exception) {
-			System.out.println(String.format(ParserLocale.ERROR_FILE.toString(), exception.getMessage()));
+		if (!file.exists()) {
+			System.out.println(String.format(ParserLocale.ERROR_FILE.toString(), file));
 
 			return;
 		}
@@ -41,7 +39,8 @@ public class Parser {
 			try {
 				movies = MovieService.parse(file);
 			} catch (final IOException exception) {
-				System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception.getMessage()));
+				System.out.print("\n\n");
+				System.out.println(String.format(ParserLocale.ERROR_PARSING.toString(), exception));
 
 				return;
 			}
@@ -56,7 +55,8 @@ public class Parser {
 			try {
 				MovieService.persist(movies);
 			} catch (final Exception exception) {
-				System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception.getMessage()));
+				System.out.print("\n\n");
+				System.out.println(String.format(ParserLocale.ERROR_IMPORT.toString(), exception));
 
 				return;
 			}
@@ -79,11 +79,6 @@ public class Parser {
 		System.out.println();
 
 		if (filePath.isEmpty()) return defaultFilePath;
-		if (!filePath.endsWith(".json")) {
-			System.out.println(String.format(ParserLocale.ERROR_INVALID_FILE_PATH.toString(), filePath));
-
-			return null;
-		}
 
 		return filePath;
 	}

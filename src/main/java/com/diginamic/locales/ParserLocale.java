@@ -7,7 +7,7 @@ public enum ParserLocale {
 	PARSING_STARTED("Parsing '%s'... "),
 	CURSOR("> "),
 	DONE("Done."),
-	ERROR_FILE("Could not open the file: %s"),
+	ERROR_FILE("File '%s' not found, please retry."),
 	ERROR_IMPORT("An error occurred during import: %s"),
 	ERROR_INVALID_FILE_PATH("Invalid file path '%s', please retry."),
 	ERROR_PARSING("An error occurred during parsing: %s"),

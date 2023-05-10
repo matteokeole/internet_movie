@@ -9,6 +9,8 @@ public class JPAManager {
 	private final static EntityManager manager = managerFactory.createEntityManager();
 	private final static JPAManager instance = new JPAManager();
 
+	private JPAManager() {}
+
 	public static JPAManager getInstance() {
 		return instance;
 	}
