@@ -22,6 +22,7 @@ import jakarta.persistence.OneToMany;
 	@NamedQuery(name="Movie.find", query="SELECT movie FROM Movie movie WHERE movie.id = :movieId"),
 	@NamedQuery(name="Movie.findBetween", query="SELECT movie FROM Movie movie WHERE movie.releaseDate >= :startYear AND movie.releaseDate <= :endYear ORDER BY movie.releaseDate"),
 	@NamedQuery(name="Movie.findByActor", query="SELECT movie FROM Movie movie JOIN movie.roles role JOIN role.actor actor WHERE actor.id = :actorId"),
+	@NamedQuery(name="Movie.findByTwoActors", query="SELECT movie FROM Movie movie JOIN movie.roles role JOIN role.actor actor WHERE actor.id = :firstActorId OR actor.id = :secondActorId"),
 })
 public class Movie {
 	@Id

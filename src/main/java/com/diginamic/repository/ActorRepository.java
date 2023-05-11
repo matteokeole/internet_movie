@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.diginamic.JPA;
 import com.diginamic.models.Actor;
+import com.diginamic.models.Movie;
 
 public class ActorRepository {
 	public static Actor find(final String actorId) {
@@ -19,12 +20,12 @@ public class ActorRepository {
 			.orElse(null);
 	}
 
-	public static List<Actor> findByMovie(final String movieId) {
+	public static List<Actor> findByMovie(final Movie movie) {
 		return JPA
 			.getInstance()
 			.getEntityManager()
 			.createNamedQuery("Actor.findByMovie", Actor.class)
-			.setParameter("movieId", movieId)
+			.setParameter("movieId", movie.getId())
 			.getResultList();
 	}
 }

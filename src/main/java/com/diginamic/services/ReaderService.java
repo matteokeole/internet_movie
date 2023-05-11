@@ -90,14 +90,14 @@ public class ReaderService {
 		System.out.println();
 
 		if (actor == null) {
-			System.out.println(String.format(ReaderLocale.ACTION_1_NO_RESULT.toString(), actorId));
+			System.out.println(String.format(ReaderLocale.ACTION_1_ERROR_NO_RESULT.toString(), actorId));
 
 			return;
 		}
 
-		final List<Movie> movies = MovieRepository.findByActor(actorId);
+		final List<Movie> movies = MovieRepository.findByActor(actor);
 
-		System.out.println(String.format(ReaderLocale.ACTION_1_RESULT.toString(), actor));
+		System.out.println(String.format(ReaderLocale.ACTION_1_RESULT.toString(), actor, movies.size()));
 		for (final Movie movie : movies) System.out.println(String.format(ReaderLocale.DASH.toString(), movie));
 	}
 
@@ -111,12 +111,12 @@ public class ReaderService {
 		System.out.println();
 
 		if (movie == null) {
-			System.out.println(String.format(ReaderLocale.ACTION_2_NO_RESULT.toString(), movieId));
+			System.out.println(String.format(ReaderLocale.ACTION_2_ERROR_NO_RESULT.toString(), movieId));
 
 			return;
 		}
 
-		final List<Actor> actors = ActorRepository.findByMovie(movieId);
+		final List<Actor> actors = ActorRepository.findByMovie(movie);
 
 		System.out.println(String.format(ReaderLocale.ACTION_2_RESULT.toString(), movie));
 		for (final Actor actor : actors) System.out.println(String.format(ReaderLocale.DASH.toString(), actor));
@@ -168,12 +168,49 @@ public class ReaderService {
 
 		final List<Movie> movies = MovieRepository.findBetween(startYear, endYear);
 
-		System.out.println(String.format(ReaderLocale.ACTION_3_RESULT.toString(), startYear, endYear));
+		System.out.println(String.format(ReaderLocale.ACTION_3_RESULT.toString(), movies.size(), startYear, endYear));
 		for (final Movie movie : movies) System.out.println(String.format(ReaderLocale.DASH.toString(), movie));
 	}
 
 	private static void handleAction4() {
-		//
+		System.out.println(ReaderLocale.ACTION_4_PROMPT_FIRST_ACTOR_ID);
+		System.out.print(ReaderLocale.CURSOR);
+
+		final String firstActorId = App.scanner.nextLine().trim();
+		final Actor firstActor = ActorRepository.find(firstActorId);
+
+		System.out.println();
+
+		if (firstActor == null) {
+			System.out.println(String.format(ReaderLocale.ACTION_4_ERROR_ACTOR_NOT_FOUND.toString(), firstActorId));
+
+			return;
+		}
+
+		System.out.println(ReaderLocale.ACTION_4_PROMPT_SECOND_ACTOR_ID);
+		System.out.print(ReaderLocale.CURSOR);
+
+		final String secondActorId = App.scanner.nextLine().trim();
+		final Actor secondActor = ActorRepository.find(secondActorId);
+
+		System.out.println();
+
+		if (secondActor == null) {
+			System.out.println(String.format(ReaderLocale.ACTION_4_ERROR_ACTOR_NOT_FOUND.toString(), secondActorId));
+
+			return;
+		}
+
+		if (firstActor.getId() == secondActor.getId()) {
+			System.out.println(ReaderLocale.ACTION_4_ERROR_SAME_ACTORS);
+
+			return;
+		}
+
+		final List<Movie> movies = MovieRepository.findByTwoActors(firstActor, secondActor);
+
+		System.out.println(String.format(ReaderLocale.ACTION_4_RESULT.toString(), movies.size(), firstActor, secondActor));
+		for (final Movie movie : movies) System.out.println(String.format(ReaderLocale.DASH.toString(), movie));
 	}
 
 	private static void handleAction5() {
