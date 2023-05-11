@@ -28,4 +28,14 @@ public class ActorRepository {
 			.setParameter("movieId", movie.getId())
 			.getResultList();
 	}
+
+	public static List<Actor> findByTwoMovies(final Movie firstMovie, final Movie secondMovie) {
+		return JPA
+			.getInstance()
+			.getEntityManager()
+			.createNamedQuery("Actor.findByTwoMovies", Actor.class)
+			.setParameter("firstMovieId", firstMovie.getId())
+			.setParameter("secondMovieId", secondMovie.getId())
+			.getResultList();
+	}
 }

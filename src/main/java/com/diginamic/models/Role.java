@@ -40,6 +40,10 @@ public class Role {
 		return movie;
 	}
 
+	public void setMovie(final Movie movie) {
+		this.movie = movie;
+	}
+
 	@JsonProperty("acteur")
 	public Actor getActor() {
 		return actor;

@@ -4,6 +4,7 @@ import com.diginamic.App;
 import com.diginamic.JPA;
 import com.diginamic.locales.ParserLocale;
 import com.diginamic.models.Movie;
+import com.diginamic.models.Role;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -98,6 +99,8 @@ public class ParserService {
 		final EntityManager manager = JPA.getInstance().getEntityManager();
 
 		for (final Movie movie : movies) {
+			for (final Role role : movie.getRoles()) role.setMovie(movie);
+
 			manager.getTransaction().begin();
 			manager.merge(movie);
 			manager.getTransaction().commit();

@@ -3,6 +3,7 @@ package com.diginamic.services;
 import java.util.List;
 
 import com.diginamic.App;
+import com.diginamic.JPA;
 import com.diginamic.locales.ReaderLocale;
 import com.diginamic.models.Actor;
 import com.diginamic.models.Movie;
@@ -66,6 +67,7 @@ public class ReaderService {
 		System.out.println(ReaderLocale.QUIT);
 
 		App.scanner.close();
+		JPA.getInstance().getEntityManager().close();
 	}
 
 	private static void printMenu() {
@@ -214,7 +216,44 @@ public class ReaderService {
 	}
 
 	private static void handleAction5() {
-		//
+		System.out.println(ReaderLocale.ACTION_5_PROMPT_FIRST_MOVIE_ID);
+		System.out.print(ReaderLocale.CURSOR);
+
+		final String firstMovieId = App.scanner.nextLine().trim();
+		final Movie firstMovie = MovieRepository.find(firstMovieId);
+
+		System.out.println();
+
+		if (firstMovie == null) {
+			System.out.println(String.format(ReaderLocale.ACTION_5_ERROR_MOVIE_NOT_FOUND.toString(), firstMovieId));
+
+			return;
+		}
+
+		System.out.println(ReaderLocale.ACTION_5_PROMPT_SECOND_MOVIE_ID);
+		System.out.print(ReaderLocale.CURSOR);
+
+		final String secondMovieId = App.scanner.nextLine().trim();
+		final Movie secondMovie = MovieRepository.find(secondMovieId);
+
+		System.out.println();
+
+		if (secondMovie == null) {
+			System.out.println(String.format(ReaderLocale.ACTION_5_ERROR_MOVIE_NOT_FOUND.toString(), secondMovieId));
+
+			return;
+		}
+
+		if (firstMovie.getId() == secondMovie.getId()) {
+			System.out.println(ReaderLocale.ACTION_5_ERROR_SAME_MOVIES);
+
+			return;
+		}
+
+		final List<Actor> actors = ActorRepository.findByTwoMovies(firstMovie, secondMovie);
+
+		System.out.println(String.format(ReaderLocale.ACTION_5_RESULT.toString(), actors.size(), firstMovie, secondMovie));
+		for (final Actor actor : actors) System.out.println(String.format(ReaderLocale.DASH.toString(), actor));
 	}
 
 	private static void handleAction6() {

@@ -18,7 +18,8 @@ import jakarta.persistence.OneToMany;
 @JsonIgnoreProperties(value={"height", "roles"})
 @NamedQueries({
 	@NamedQuery(name="Actor.find", query="SELECT actor FROM Actor actor WHERE actor.id = :actorId"),
-	@NamedQuery(name="Actor.findByMovie", query="SELECT actor FROM Actor actor JOIN actor.roles role JOIN role.movie movie WHERE movie.id = :movieId")
+	@NamedQuery(name="Actor.findByMovie", query="SELECT actor FROM Actor actor JOIN actor.roles role JOIN role.movie movie WHERE movie.id = :movieId"),
+	@NamedQuery(name="Actor.findByTwoMovies", query="SELECT actor FROM Actor actor JOIN actor.roles role1 JOIN role1.movie movie1 JOIN actor.roles role2 JOIN role2.movie movie2 WHERE movie1.id = :firstMovieId AND movie2.id = :secondMovieId"),
 })
 public class Actor {
 	@Id
