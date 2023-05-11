@@ -38,6 +38,17 @@ public class MovieRepository {
 			.getResultList();
 	}
 
+	public static List<Movie> findByActorBetween(final int startYear, final int endYear, final Actor actor) {
+		return JPA
+			.getInstance()
+			.getEntityManager()
+			.createNamedQuery("Movie.findByActorBetween", Movie.class)
+			.setParameter("startYear", startYear)
+			.setParameter("endYear", endYear)
+			.setParameter("actorId", actor.getId())
+			.getResultList();
+	}
+
 	public static List<Movie> findByTwoActors(final Actor firstActor, final Actor secondActor) {
 		return JPA
 			.getInstance()

@@ -92,7 +92,7 @@ public class ReaderService {
 		System.out.println();
 
 		if (actor == null) {
-			System.out.println(String.format(ReaderLocale.ACTION_1_ERROR_NO_RESULT.toString(), actorId));
+			System.out.println(String.format(ReaderLocale.ACTION_1_ERROR_ACTOR_NOT_FOUND.toString(), actorId));
 
 			return;
 		}
@@ -113,7 +113,7 @@ public class ReaderService {
 		System.out.println();
 
 		if (movie == null) {
-			System.out.println(String.format(ReaderLocale.ACTION_2_ERROR_NO_RESULT.toString(), movieId));
+			System.out.println(String.format(ReaderLocale.ACTION_2_ERROR_MOVIE_NOT_FOUND.toString(), movieId));
 
 			return;
 		}
@@ -133,10 +133,10 @@ public class ReaderService {
 
 		prompt = App.scanner.nextLine().trim();
 
+		System.out.println();
+
 		try {
 			startYear = Integer.parseInt(prompt);
-
-			System.out.println();
 
 			if (startYear < 0) throw new NumberFormatException();
 		} catch (final NumberFormatException exception) {
@@ -150,10 +150,10 @@ public class ReaderService {
 
 		prompt = App.scanner.nextLine().trim();
 
+		System.out.println();
+
 		try {
 			endYear = Integer.parseInt(prompt);
-
-			System.out.println();
 
 			if (endYear < 0) throw new NumberFormatException();
 		} catch (final NumberFormatException exception) {
@@ -257,6 +257,69 @@ public class ReaderService {
 	}
 
 	private static void handleAction6() {
-		//
+		final int startYear, endYear;
+		String prompt;
+
+		System.out.println(ReaderLocale.ACTION_6_PROMPT_START_YEAR);
+		System.out.print(ReaderLocale.CURSOR);
+
+		prompt = App.scanner.nextLine().trim();
+
+		System.out.println();
+
+		try {
+			startYear = Integer.parseInt(prompt);
+
+			if (startYear < 0) throw new NumberFormatException();
+		} catch (final NumberFormatException exception) {
+			System.out.println(String.format(ReaderLocale.ACTION_6_ERROR_INVALID_YEAR.toString(), prompt));
+
+			return;
+		}
+
+		System.out.println(ReaderLocale.ACTION_6_PROMPT_END_YEAR);
+		System.out.print(ReaderLocale.CURSOR);
+
+		prompt = App.scanner.nextLine().trim();
+
+		System.out.println();
+
+		try {
+			endYear = Integer.parseInt(prompt);
+
+			if (endYear < 0) throw new NumberFormatException();
+		} catch (final NumberFormatException exception) {
+			System.out.println(String.format(ReaderLocale.ACTION_6_ERROR_INVALID_YEAR.toString(), prompt));
+
+			return;
+		}
+
+		if (startYear >= endYear) {
+			System.out.println(ReaderLocale.ACTION_6_ERROR_GREATER_START_YEAR);
+
+			return;
+		}
+
+		System.out.println(ReaderLocale.ACTION_6_PROMPT_ACTOR);
+		System.out.print(ReaderLocale.CURSOR);
+
+		final String actorId = App.scanner.nextLine().trim();
+		final Actor actor = ActorRepository.find(actorId);
+
+		System.out.println();
+
+		if (actor == null) {
+			System.out.println(String.format(ReaderLocale.ACTION_6_ERROR_ACTOR_NOT_FOUND.toString(), actorId));
+
+			return;
+		}
+
+		System.out.println(actor);
+		System.out.println(startYear + " - " + endYear);
+
+		final List<Movie> movies = MovieRepository.findByActorBetween(startYear, endYear, actor);
+
+		System.out.println(String.format(ReaderLocale.ACTION_6_RESULT.toString(), movies.size(), startYear, endYear, actor));
+		for (final Movie movie : movies) System.out.println(String.format(ReaderLocale.DASH.toString(), movie));
 	}
 }
