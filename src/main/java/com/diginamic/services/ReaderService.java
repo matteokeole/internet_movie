@@ -314,9 +314,6 @@ public class ReaderService {
 			return;
 		}
 
-		System.out.println(actor);
-		System.out.println(startYear + " - " + endYear);
-
 		final List<Movie> movies = MovieRepository.findByActorBetween(startYear, endYear, actor);
 
 		System.out.println(String.format(ReaderLocale.ACTION_6_RESULT.toString(), movies.size(), startYear, endYear, actor));
