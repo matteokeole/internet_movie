@@ -88,19 +88,20 @@ public class ParserService {
 
 	private static Movie[] parse(final File file) throws IOException {
 		final ObjectMapper mapper = new ObjectMapper();
-
-		return mapper
+		final Movie[] movies = mapper
 			.setDateFormat(new SimpleDateFormat("yyyy-M-dd"))
 			.setSerializationInclusion(Include.NON_NULL)
 			.readValue(file, Movie[].class);
+
+		for (final Movie movie : movies) for (final Role role : movie.getRoles()) role.setMovie(movie);
+
+		return movies;
 	}
 
 	private static void persist(final Movie[] movies) {
 		final EntityManager manager = JPA.getInstance().getEntityManager();
 
 		for (final Movie movie : movies) {
-			for (final Role role : movie.getRoles()) role.setMovie(movie);
-
 			manager.getTransaction().begin();
 			manager.merge(movie);
 			manager.getTransaction().commit();
