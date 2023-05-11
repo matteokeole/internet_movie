@@ -20,7 +20,8 @@ import jakarta.persistence.OneToMany;
 @JsonIgnoreProperties(value={"castingPrincipal"})
 @NamedQueries({
 	@NamedQuery(name="Movie.find", query="SELECT movie FROM Movie movie WHERE movie.id = :movieId"),
-	@NamedQuery(name="Movie.findByActor", query="SELECT movie FROM Movie movie JOIN movie.roles role JOIN role.actor actor WHERE actor.id = :actorId")
+	@NamedQuery(name="Movie.findBetween", query="SELECT movie FROM Movie movie WHERE movie.releaseDate >= :startYear AND movie.releaseDate <= :endYear ORDER BY movie.releaseDate"),
+	@NamedQuery(name="Movie.findByActor", query="SELECT movie FROM Movie movie JOIN movie.roles role JOIN role.actor actor WHERE actor.id = :actorId"),
 })
 public class Movie {
 	@Id
@@ -44,7 +45,7 @@ public class Movie {
 	private List<Producer> producers = new ArrayList<>();
 
 	@Column(name="release_date")
-	private String releaseDate;
+	private Integer releaseDate;
 
 	@OneToMany(mappedBy="movie", cascade=CascadeType.ALL)
 	private List<Role> roles = new ArrayList<>();
@@ -98,9 +99,19 @@ public class Movie {
 		return producers;
 	}
 
-	@JsonProperty("anneeSortie")
-	public String getReleaseDate() {
+	public Integer getReleaseDate() {
 		return releaseDate;
+	}
+
+	@JsonProperty("anneeSortie")
+	public void setReleaseDate(final String releaseString) {
+		if (releaseString.isBlank()) return;
+
+		try {
+			releaseDate = Integer.parseInt(releaseString.split("-|/")[0]);
+		} catch (final Exception exception) {
+			return;
+		}
 	}
 
 	@JsonProperty("roles")

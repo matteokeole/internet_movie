@@ -123,7 +123,53 @@ public class ReaderService {
 	}
 
 	private static void handleAction3() {
-		//
+		final int startYear, endYear;
+		String prompt;
+
+		System.out.println(ReaderLocale.ACTION_3_PROMPT_START_YEAR);
+		System.out.print(ReaderLocale.CURSOR);
+
+		prompt = App.scanner.nextLine().trim();
+
+		try {
+			startYear = Integer.parseInt(prompt);
+
+			System.out.println();
+
+			if (startYear < 0) throw new NumberFormatException();
+		} catch (final NumberFormatException exception) {
+			System.out.println(String.format(ReaderLocale.ACTION_3_ERROR_INVALID_YEAR.toString(), prompt));
+
+			return;
+		}
+
+		System.out.println(ReaderLocale.ACTION_3_PROMPT_END_YEAR);
+		System.out.print(ReaderLocale.CURSOR);
+
+		prompt = App.scanner.nextLine().trim();
+
+		try {
+			endYear = Integer.parseInt(prompt);
+
+			System.out.println();
+
+			if (endYear < 0) throw new NumberFormatException();
+		} catch (final NumberFormatException exception) {
+			System.out.println(String.format(ReaderLocale.ACTION_3_ERROR_INVALID_YEAR.toString(), prompt));
+
+			return;
+		}
+
+		if (startYear >= endYear) {
+			System.out.println(ReaderLocale.ACTION_3_ERROR_GREATER_START_YEAR);
+
+			return;
+		}
+
+		final List<Movie> movies = MovieRepository.findBetween(startYear, endYear);
+
+		System.out.println(String.format(ReaderLocale.ACTION_3_RESULT.toString(), startYear, endYear));
+		for (final Movie movie : movies) System.out.println(String.format(ReaderLocale.DASH.toString(), movie));
 	}
 
 	private static void handleAction4() {
