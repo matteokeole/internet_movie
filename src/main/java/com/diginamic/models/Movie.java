@@ -46,7 +46,7 @@ public class Movie {
 	@Column(name="release_date")
 	private String releaseDate;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="movie", cascade=CascadeType.ALL)
 	private List<Role> roles = new ArrayList<>();
 
 	@ManyToMany(cascade=CascadeType.ALL)
